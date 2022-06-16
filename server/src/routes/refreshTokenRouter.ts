@@ -22,7 +22,8 @@ router.get('/', async (req, res) => {
 
         const existingUser = await User.findOne(decodedUser.userId)
 
-        if (!existingUser) res.status(401).json({ error: '....' })
+        if (!existingUser || existingUser.tokenVersion !== decodedUser.tokenVersion)
+            res.status(401).json({ error: '....' })
 
         sendRefreshToken(res, existingUser as User)
 
@@ -30,6 +31,7 @@ router.get('/', async (req, res) => {
             success: true,
             accessToken: createToken('accessToken', existingUser as User)
         })
+
     } catch (error) {
         return res.status(403).json({ error: error })
     }

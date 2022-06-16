@@ -5,7 +5,6 @@ import { RegisterInput } from '../types/RegisterInput'
 import { UserMutationResponse } from '../types/UserMutationResponse'
 import { LoginInput } from '../types/LoginInput'
 import { createToken, sendRefreshToken } from '../utils/auth';
-// import { createToken, sendRefreshToken } from '../utils/auth'
 import { Context } from '../types/Context'
 
 @Resolver()
@@ -90,31 +89,32 @@ export class UserResolver {
     }
 
 
-    // @Mutation(_return => UserMutationResponse)
-    // async logout(
-    //     @Arg('userId', _type => ID) userId: number,
-    //     @Ctx() { res }: Context
-    // ): Promise<UserMutationResponse> {
-    //     const existingUser = await User.findOne(userId)
+    @Mutation(_return => UserMutationResponse)
+    async logout(
+        @Arg('userId', _type => ID) userId: number,
+        @Ctx() { res }: Context
+    ): Promise<UserMutationResponse> {
 
-    //     if (!existingUser) {
-    //         return {
-    //             code: 400,
-    //             success: false
-    //         }
-    //     }
+        const existingUser = await User.findOne(userId)
 
-    //     existingUser.tokenVersion += 1
+        if (!existingUser) {
+            return {
+                code: 400,
+                success: false
+            }
+        }
 
-    //     await existingUser.save()
+        existingUser.tokenVersion += 1
 
-    //     res.clearCookie(process.env.REFRESH_TOKEN_COOKIE_NAME as string, {
-    //         httpOnly: true,
-    //         secure: true,
-    //         sameSite: 'lax',
-    //         path: '/refresh_token'
-    //     })
+        await existingUser.save()
 
-    //     return { code: 200, success: true }
-    // }
+        res.clearCookie(process.env.REFRESH_TOKEN_COOKIE_NAME as string, {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'lax',
+            path: '/refresh_token'
+        })
+
+        return { code: 200, success: true }
+    }
 }

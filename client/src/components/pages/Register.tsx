@@ -14,11 +14,14 @@ export default function Register({ }: Props) {
 
     const handleSubmitRegister = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        await register({
+        const res = await register({
             variables: {
                 registerInput: { username, password }
             }
         })
+
+        // if ma dang ki thanh cong cho login luon
+        // console.log(res.data?.register?.success)
         navigate('..')
     }
 
