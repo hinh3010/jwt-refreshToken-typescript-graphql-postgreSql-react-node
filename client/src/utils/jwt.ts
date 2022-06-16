@@ -61,7 +61,9 @@ const JWTManager = () => {
 
     // Đăng xuất tất cả các tab (vô hiệu hóa inMemoryToken)
     window.addEventListener('storage', event => {
-        if (event.key === LOGOUT_EVENT_NAME) inMemoryToken = null
+        if (event.key === LOGOUT_EVENT_NAME) {
+            inMemoryToken = null
+        }
     })
 
     const getUserId = () => userId

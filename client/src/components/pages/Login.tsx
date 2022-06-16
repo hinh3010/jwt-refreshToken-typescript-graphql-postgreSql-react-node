@@ -17,6 +17,7 @@ export default function Login({ }: Props) {
     const [login, _] = useLoginMutation()
 
     const { setIsAuthenticated } = useAuthContext()
+
     const handleSubmitLogin = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         const res = await login({
